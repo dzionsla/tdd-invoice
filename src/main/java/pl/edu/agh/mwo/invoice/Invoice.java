@@ -7,24 +7,43 @@ import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
 	private Collection<Product> products;
-
+	
 	public void addProduct(Product product) {
-		// TODO: implement
+		products.add(product);
 	}
 
 	public void addProduct(Product product, Integer quantity) {
-		// TODO: implement
+		if (quantity == 0 || quantity < 0) {
+			throw new IllegalArgumentException("quantity == zero");
+		}
+		for (int i = 0; i < quantity; i++) {
+			addProduct(product);
+		}
 	}
 
 	public BigDecimal getSubtotal() {
-		return null;
+		BigDecimal result = null;
+		for (Product product : products) {
+			result = result.add(product.getPrice());
+		}
+		return result;
+		//return null;
 	}
 
 	public BigDecimal getTax() {
+//		BigDecimal result = null;
+//		for (Product product : products) {
+//			result = result.add(product.getTaxPercent());
+//		}
 		return null;
 	}
 
 	public BigDecimal getTotal() {
+//		BigDecimal result = null;
+//		for (Product product : products) {
+//			result = result.add(product.getPrice());
+//		}
+//		return result;
 		return null;
 	}
 }
