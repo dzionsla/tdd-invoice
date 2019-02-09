@@ -44,6 +44,7 @@ public class ProductTest {
 	public void testProductWithEmptyName() {
 		new TaxFreeProduct("", new BigDecimal("100.0"));
 		
+		
 	}
 
 	@Test(expected = IllegalArgumentException.class)
