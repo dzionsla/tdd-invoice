@@ -13,19 +13,19 @@ public abstract class Product {
 		this.name = name;
 		this.price = price;
 		this.taxPercent = tax;
+		if (this.name.equals("") || this.name == null) {
+			throw new IllegalArgumentException("Pusta nazwa");
+		}
+		if (this.price.equals(null) || this.price.compareTo(BigDecimal.ZERO) < 0) {
+			throw new IllegalArgumentException("Pusta nazwa");
+		}
 	}
 
 	public String getName() {
-		if (this.name.equals("") || this.name.equals(null)) {
-			throw new IllegalArgumentException("Pusta nazwa");
-		}
 		return this.name;
 	}
 
 	public BigDecimal getPrice() {
-		if (this.price.equals(null)) {
-			throw new IllegalArgumentException("Pusta nazwa");
-		}
 		return this.price;
 	}
 
