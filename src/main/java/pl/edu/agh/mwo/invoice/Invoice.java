@@ -37,6 +37,10 @@ public class Invoice {
 		for (Product product : products.keySet()) {
 			BigDecimal quantity = new BigDecimal(products.get(product));
 			totalNet = totalNet.add(product.getPrice().multiply(quantity));
+			if(product instanceof HasExcise) {
+				//tutaj pisze kod dodania akcyzy
+				totalNet += product.getExcise();
+			}
 		}
 		return totalNet;
 	}
