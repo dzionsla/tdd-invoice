@@ -140,5 +140,35 @@ public class InvoiceTest {
 		}
 	}
 	
+	@Test
+	public void testPrintedInvoiceHasNumber(){
+		String printedInvoice = invoice.getAsText();
+		String number = invoice.getNumber().toString();
+		Assert.assertThat(printedInvoice, Matchers.containsString("nr " + number));
+	}
+	
+	@Test
+	public void testLiczbaPozycji(){
+		//invoice.addProduct(new TaxFreeProduct("chleb", new BigDecimal("5")), 2);
+		//invoice.addProduct(new TaxFreeProduct("frytki", new BigDecimal("6.50")), 3);
+		Assert.assertThat(invoice.getAsText(), Matchers.containsString("Liczba pozycji 3"));
+	}
+	
+	@Test
+	public void testEachProductInItsOwnLine(){
+		invoice.addProduct(new TaxFreeProduct("chleb", new BigDecimal("5")), 2);
+		invoice.addProduct(new TaxFreeProduct("frytki", new BigDecimal("6.50")), 3);
+		Assert.assertThat(invoice.getAsText(), Matchers.containsString("chleb 2 5,00\nfrytki 3 6,50"));
+	}
+	
+	@Test
+	public void testAddingTheSameProductTwice(){
+		invoice.addProduct(new TaxFreeProduct("chleb", new BigDecimal("5")));
+		invoice.addProduct(new TaxFreeProduct("chleb", new BigDecimal("5")));
+		Assert.assertThat(invoice.getAsText(), Matchers.containsString("chleb 2 5,00"));
+	}
+	
+	
+	
 	
 }

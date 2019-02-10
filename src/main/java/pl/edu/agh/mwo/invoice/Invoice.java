@@ -1,14 +1,14 @@
 package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
+import java.text.DecimalFormat;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Random;
 
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
-	private Map<Product, Integer> products = new HashMap<Product, Integer>();
+	private Map<Product, Integer> products = new LinkedHashMap<Product, Integer>();
 	private int number;
 	private static Integer nextNumber = 1;
 
@@ -24,9 +24,14 @@ public class Invoice {
 		if (product == null || quantity <= 0) {
 			throw new IllegalArgumentException();
 		}
-		products.put(product, quantity);
-	}
-
+		if (products.containsKey(product)) {
+			Integer currentQuantity = this.products.get(product);
+			this.products.put(product, currentQuantity + quantity);
+		} else {
+			this.products.put(product, quantity);
+		}
+	}	
+	
 	public BigDecimal getNetTotal() {
 		BigDecimal totalNet = BigDecimal.ZERO;
 		for (Product product : products.keySet()) {
@@ -52,4 +57,26 @@ public class Invoice {
 	public Integer getNumber() {
 		return number;
 	}
+
+	public String getAsText() {
+		StringBuilder sb = new StringBuilder("");
+		sb.append("Faktura nr " + this.number);
+		DecimalFormat df = new DecimalFormat("0.00");
+		for (Product product : products.keySet()) {
+			BigDecimal quantity = new BigDecimal(products.get(product));
+			sb.append("\n");
+			sb.append(product.getName());
+			sb.append(" ");
+			sb.append(quantity);
+			sb.append(" ");
+			sb.append(df.format(product.getPrice()));
+		}
+		sb.append("\nLiczba pozycji: ");
+		sb.append(products.size());
+		
+		return  sb.toString();
+	}
+
+	
+	
 }
